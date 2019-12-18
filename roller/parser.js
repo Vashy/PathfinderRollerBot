@@ -1,5 +1,3 @@
-
-
 const rollRegex = /^\/(r|roll)\s+(\d*)d(\d+)([+-](\d+|(\d*)d(\d+)))*$/;
 
 exports.parser = {
@@ -13,7 +11,29 @@ exports.parser = {
         return splitKeepingSeparator(exprWithoutPrefix, /[+-]/);
     },
 
+    compute(tokens) {
+        let index = 1;
+        let result = evaluate(tokens[0]);
+        while (index < tokens.length) {
+            let operator = tokens[index];
+            if (['+', '-'].includes(operator)) {
+                result += evalWithOperator(tokens[index + 1], operator);
+                index += 2;
+            } else {
+                index++;
+            }
+        }
+        return result;
+    },
 };
+
+function evaluate(token) {
+    return parseInt(token);
+}
+
+function evalWithOperator(token, operator) {
+    return operator === '+' ? evaluate(token) : -evaluate(token);
+}
 
 function splitKeepingSeparator(expression, regex) {
     let token = '';
