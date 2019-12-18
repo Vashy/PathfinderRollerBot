@@ -1,5 +1,9 @@
 const rollRegex = /^\/(r|roll)\s+(\d*)d(\d+)([+-](\d+|(\d*)d(\d+)))*$/;
 
+function isOperator(operator) {
+    return ['+', '-'].includes(operator);
+}
+
 exports.parser = {
 
     test(expression) {
@@ -15,9 +19,9 @@ exports.parser = {
         let index = 1;
         let result = evaluate(tokens[0]);
         while (index < tokens.length) {
-            let operator = tokens[index];
-            if (['+', '-'].includes(operator)) {
-                result += evalWithOperator(tokens[index + 1], operator);
+            let token = tokens[index];
+            if (isOperator(token)) {
+                result += evalWithOperator(tokens[index + 1], token);
                 index += 2;
             } else {
                 index++;

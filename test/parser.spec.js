@@ -34,14 +34,11 @@ describe('Expressions', () => {
     });
 
     it('should calculate a simple expression with a negative return', () => {
-
         expect(parser.compute(['-15', '+', '13'])).toEqual(-2);
         expect(parser.compute(['15', '-', '117'])).toEqual(-102);
     });
 
     it('should evaluate a complex expression', () => {
-        expect(parser.compute).toBeDefined();
-
         expect(parser.compute(['13', '+', '15', '-', '22', '+', '123'])).toEqual(129);
     });
 });
