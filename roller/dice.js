@@ -1,7 +1,6 @@
 
 
 exports.diceRoller = {
-
     roll(sides, randomCallback = Math.random) {
         return randInt(1, sides, randomCallback)
     }

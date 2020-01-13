@@ -41,4 +41,20 @@ describe('Expressions', () => {
     it('should evaluate a complex expression', () => {
         expect(parser.compute(['13', '+', '15', '-', '22', '+', '123'])).toEqual(129);
     });
+
+    it('should evaluate a roll', () => {
+        let expression = ['1d20'];
+        expect(parser.compute(expression, Math.random)).toBeGreaterThanOrEqual(1);
+        expect(parser.compute(expression, Math.random)).toBeLessThanOrEqual(20);
+    });
+
+    it('should evaluate both roll', () => {
+        let expression = ['2d20'];
+        expect(parser.compute(expression, () => 0.9999)).toEqual(40);
+    });
+
+    it('should evaluate a complex expression with rolls', () => {
+        let expression = ['2d20', '+', '14', '-', '1d4'];
+        expect(parser.compute(expression, () => 0.9999)).toEqual(40 + 14 - 4);
+    });
 });
