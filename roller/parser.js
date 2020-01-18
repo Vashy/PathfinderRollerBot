@@ -1,7 +1,7 @@
 const {diceRoller} = require("../roller/dice");
 
-const ROLL_REGEX = /^\/(r|roll)\s+(\d*)d(\d+)([+-](\d+|(\d*)d(\d+)))*$/;
-const ROLL_TOKEN_REGEX = /^\d*d[1-9]\d*$/;
+const rollRegExp = /^\/(r|roll)\s+(\d*)d(\d+)([+-](\d+|(\d*)d(\d+)))*$/;
+const rollTokenRegExp = /^\d*d[1-9]\d*$/;
 
 function isOperator(operator) {
     return ['+', '-'].includes(operator);
@@ -10,12 +10,12 @@ function isOperator(operator) {
 exports.parser = {
 
     test(expression) {
-        return ROLL_REGEX.test(expression)
+        return rollRegExp.test(expression)
     },
 
     tokenize(expression) {
-        const exprWithoutPrefix = expression.split(' ')[1];
-        return splitKeepingSeparator(exprWithoutPrefix, /[+-]/);
+        const expressionWithoutPrefix = expression.split(' ')[1];
+        return splitInTokens(expressionWithoutPrefix, /[+-]/);
     },
 
     compute(tokens, randomCallback) {
@@ -44,7 +44,7 @@ function evaluate(token, randomCallback) {
 }
 
 function isRoll(token) {
-    return new RegExp(ROLL_TOKEN_REGEX).test(token);
+    return new RegExp(rollTokenRegExp).test(token);
 }
 
 function computeRoll(token, randomCallback) {
@@ -63,15 +63,15 @@ function evalWithOperator(token, operator, randomCallback) {
     return operator === '+' ? evaluate(token, randomCallback) : -evaluate(token, randomCallback);
 }
 
-function splitKeepingSeparator(expression, regex) {
+function splitInTokens(expression, regex) {
     let token = '';
     const result = [];
-    [...expression].forEach(c => {
-        if (regex.test(c)) {
-            result.push(token, c);
+    [...expression].forEach(char => {
+        if (regex.test(char)) {
+            result.push(token, char);
             token = '';
         } else {
-            token = token.concat(c);
+            token = token.concat(char);
         }
     });
     result.push(token);

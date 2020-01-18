@@ -56,5 +56,8 @@ describe('Expressions', () => {
     it('should evaluate a complex expression with rolls', () => {
         let expression = ['2d20', '+', '14', '-', '1d4'];
         expect(parser.compute(expression, () => 0.9999)).toEqual(40 + 14 - 4);
+        // let [result, tokens] = parser.compute(expression, () => 0.9999);
+        // expect(result).toEqual(40 + 14 - 4);
+        // expect(tokens).toEqual('(20)', '+', '(20)', '+', '14', '-', '(4)');
     });
 });
